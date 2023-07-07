@@ -52,14 +52,23 @@ namespace SilverBarricadeStructureTools
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
         }
 
+        // todo:
+        // track claim flags and generator placement
+        // decay
+        // healing
+        // height limiter
+        // offline/online raid prot
+        // bypass perm for object placements
+        // raid logs
+
         private void Patches_OnStructureDestroying(StructureDrop drop)
         {
-            
+
         }
 
         private void Patches_OnBarricadeDestroying(BarricadeDrop drop)
         {
-            
+
         }
 
         private void StructureDamage(CSteamID instigatorSteamID, Transform structureTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
