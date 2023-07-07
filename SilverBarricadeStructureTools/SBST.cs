@@ -86,6 +86,7 @@ namespace SilverBarricadeStructureTools
             var structure = StructureManager.FindStructureByRootTransform(structureTransform);
             var data = structure.GetServersideData();
             Unbreakables.Execute(data.owner, data.group, ref shouldAllow, structure.asset.itemName, null, instigatorSteamID);
+            if (cfg.OfflineRaidProt.Enabled) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
         }
 
         private void StructurePlace(Structure structure, ItemStructureAsset asset, ref Vector3 point, ref float angle_x, ref float angle_y, ref float angle_z, ref ulong owner, ref ulong group, ref bool shouldAllow)
@@ -102,6 +103,7 @@ namespace SilverBarricadeStructureTools
             var barricade = BarricadeManager.FindBarricadeByRootTransform(barricadeTransform);
             var data = barricade.GetServersideData();
             Unbreakables.Execute(data.owner, data.group, ref shouldAllow, barricade.asset.itemName, barricade.asset.build, instigatorSteamID);
+            if (cfg.OfflineRaidProt.Enabled) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
             if (barricadeTransform.parent != null && barricadeTransform.parent.TryGetComponent<InteractableVehicle>(out InteractableVehicle vehicle))
             {
                 

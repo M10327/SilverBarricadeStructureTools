@@ -20,6 +20,7 @@ namespace SilverBarricadeStructureTools
         public mAutoToggleAndUnlimited AutoToggleAndUnlimited;
         public mHeightLimiter HeightLimiter;
         public mDecay Decay;
+        public mOfflineRaidProt OfflineRaidProt;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -80,6 +81,12 @@ namespace SilverBarricadeStructureTools
                 HealPercent = 4,
                 IntervalSeconds = 6048,
                 DecayIgnoreOwnerGroupIds = new List<ulong>() { 69 }
+            };
+            OfflineRaidProt = new mOfflineRaidProt()
+            {
+                Enabled = true,
+                OnlineMulti = 1.0f,
+                OfflineMulti = 0.5f
             };
         }
     }

@@ -87,6 +87,7 @@
     <Compile Include="Models\mAutoToggleAndUnlimited.cs" />
     <Compile Include="Models\mDecay.cs" />
     <Compile Include="Models\mHeightLimiter.cs" />
+    <Compile Include="Models\mOfflineRaidProt.cs" />
     <Compile Include="Models\mRoadPlaceBlocking.cs" />
     <Compile Include="Models\mVehicleBarricadeBlacklist.cs" />
     <Compile Include="Patches.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="SubPlugins\AutoToggleAndUnlimited.cs" />
     <Compile Include="SubPlugins\Decay.cs" />
     <Compile Include="SubPlugins\HeightLimiter.cs" />
+    <Compile Include="SubPlugins\OfflineRaidProt.cs" />
     <Compile Include="SubPlugins\OnlinePlayerGroupManager.cs" />
     <Compile Include="SubPlugins\RoadPlaceBlocking.cs" />
     <Compile Include="SubPlugins\Unbreakables.cs" />
