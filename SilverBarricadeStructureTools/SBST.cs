@@ -136,7 +136,9 @@ namespace SilverBarricadeStructureTools
         public bool CheckIfBypassPlacements(ulong owner)
         {
             if (!cfg.BypassPlacementsAllow) return false;
+            if (owner == (ulong)Provider.server) return true;
             var p = UnturnedPlayer.FromCSteamID((CSteamID)owner);
+            if (p == null) return true;
             if (p.HasPermission(cfg.BypassPlacementsPerm) || p.IsAdmin) return true;
             else return false;
         }
