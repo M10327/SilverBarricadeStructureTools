@@ -16,6 +16,7 @@ namespace SilverBarricadeStructureTools
         public mRoadPlaceBlocking RoadPlaceBlocking;
         public List<ulong> UnbreakablesIds;
         public mAutoToggleAndUnlimited AutoToggleAndUnlimited;
+        public mHeightLimiter HeightLimiter;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -40,6 +41,31 @@ namespace SilverBarricadeStructureTools
                 Lights = new List<ulong>() { 69, 103582791472243867 },
                 Oxygenators = new List<ulong>() { 69, 103582791472243867 },
                 Fires = new List<ulong>() { 69, 103582791472243867 }
+            };
+            HeightLimiter = new mHeightLimiter()
+            {
+                Enabled = true,
+                MaxHeight = 175,
+                UseDynamicHeight = true,
+                DynamicHeight = 125,
+                EnabledHeightLimitedCommands = true,
+                CommandsMinYToBlock = 100,
+                BlockedCommands = new List<string>()
+                {
+                    "tpa",
+                    "garageadd",
+                    "gadd",
+                    "ga"
+                },
+                CustomHeights = new List<CustomHeightObject>()
+                {
+                    new CustomHeightObject()
+                    {
+                        ID = 1691,
+                        MaxHeight = 80,
+                        DynamicHeight = 20
+                    }
+                }
             };
         }
     }

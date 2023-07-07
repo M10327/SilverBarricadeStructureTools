@@ -1,4 +1,5 @@
 ﻿using Rocket.API.Collections;
+using Rocket.Core;
 using Rocket.Core.Plugins;
 using Rocket.Core.Utils;
 using Rocket.Unturned;
@@ -37,6 +38,9 @@ namespace SilverBarricadeStructureTools
             Patches.PatchAll();
             Patches.OnBarricadeDestroying += Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying += Patches_OnStructureDestroying;
+            if (cfg.HeightLimiter.EnabledHeightLimitedCommands) R.Commands.OnExecuteCommand += HeightLimiter.Commands_OnExecuteCommand;
+            U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
+            U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
 
             // auto check timer
             AutoCheckTimer = new System.Timers.Timer(cfg.AutoToggleAndUnlimited.SecondsBetweenChecks * 1000);
@@ -44,8 +48,6 @@ namespace SilverBarricadeStructureTools
             AutoCheckTimer.AutoReset = true;
             AutoCheckTimer.Enabled = true;
 
-            U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
-            U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
             OnlineGroups = new List<ulong>();
             OnlinePlayers = new List<ulong>();
 
@@ -56,7 +58,6 @@ namespace SilverBarricadeStructureTools
         // track claim flags and generator placement
         // decay
         // healing
-        // height limiter
         // offline/online raid prot
         // bypass perm for object placements
         // raid logs
@@ -82,6 +83,8 @@ namespace SilverBarricadeStructureTools
         {
             if (cfg.RoadPlaceBlocking.Enabled)
                 RoadPlaceBlocking.Execute(asset.id, point, ref shouldAllow, owner);
+            if (cfg.HeightLimiter.Enabled)
+                HeightLimiter.CheckPlacement((CSteamID)owner, point, ref shouldAllow, asset.id);
         }
 
         private void BarricadeDamage(CSteamID instigatorSteamID, Transform barricadeTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
@@ -112,6 +115,8 @@ namespace SilverBarricadeStructureTools
             {
                 if (cfg.RoadPlaceBlocking.Enabled)
                     RoadPlaceBlocking.Execute(asset.id, point, ref shouldAllow, owner);
+                if (cfg.HeightLimiter.Enabled)
+                    HeightLimiter.CheckPlacement((CSteamID)owner, point, ref shouldAllow, asset.id);
             }
         }
 
@@ -124,6 +129,9 @@ namespace SilverBarricadeStructureTools
             Patches.UnpatchAll();
             Patches.OnBarricadeDestroying -= Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying -= Patches_OnStructureDestroying;
+            if (cfg.HeightLimiter.EnabledHeightLimitedCommands) R.Commands.OnExecuteCommand -= HeightLimiter.Commands_OnExecuteCommand;
+            U.Events.OnPlayerConnected -= OnlinePlayerGroupManager.Events_OnPlayerConnected;
+            U.Events.OnPlayerDisconnected -= OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
 
             AutoCheckTimer.Stop();
             AutoCheckTimer.Elapsed -= AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
@@ -136,7 +144,10 @@ namespace SilverBarricadeStructureTools
             { "PlacementBlocked", "You cannot place {0} on vehicles!" },
             { "NotYourVehicle", "That is not your vehicle!" },
             { "NoBuildHere", "You may not build on roads!" },
-            { "MayNotDamage", "This {0} is protected from all damage!" }
+            { "MayNotDamage", "This {0} is protected from all damage!" },
+            { "MaxHeight", "You cannot build over the max height limit! ({0}m)" },
+            { "MaxHeightDynamic", "You cannot build more than {0}m above the ground!" },
+            { "CommandBlocked", "You cannot use the {0} command above {1}m!" }
         };
     }
 }

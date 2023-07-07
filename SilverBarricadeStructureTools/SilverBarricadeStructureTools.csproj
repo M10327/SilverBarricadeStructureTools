@@ -81,12 +81,14 @@
     <Compile Include="Commands\cListOnlines.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Models\mAutoToggleAndUnlimited.cs" />
+    <Compile Include="Models\mHeightLimiter.cs" />
     <Compile Include="Models\mRoadPlaceBlocking.cs" />
     <Compile Include="Models\mVehicleBarricadeBlacklist.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="SBST.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubPlugins\AutoToggleAndUnlimited.cs" />
+    <Compile Include="SubPlugins\HeightLimiter.cs" />
     <Compile Include="SubPlugins\OnlinePlayerGroupManager.cs" />
     <Compile Include="SubPlugins\RoadPlaceBlocking.cs" />
     <Compile Include="SubPlugins\Unbreakables.cs" />
