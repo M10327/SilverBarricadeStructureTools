@@ -1,10 +1,12 @@
-﻿using Rocket.API.Collections;
+﻿using Rocket.API;
+using Rocket.API.Collections;
 using Rocket.Core;
 using Rocket.Core.Plugins;
 using Rocket.Core.Utils;
 using Rocket.Unturned;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Events;
+using Rocket.Unturned.Player;
 using SDG.Unturned;
 using SilverBarricadeStructureTools.SubPlugins;
 using Steamworks;
@@ -24,6 +26,7 @@ namespace SilverBarricadeStructureTools
         public static SBST Instance { get; private set; }
         public UnityEngine.Color MessageColor { get; set; }
         private static System.Timers.Timer AutoCheckTimer { get; set; }
+        private static System.Timers.Timer DecayTimer { get; set; }
         public List<ulong> OnlinePlayers { get; set; }
         public List<ulong> OnlineGroups { get; set; }
         protected override void Load()
@@ -40,13 +43,23 @@ namespace SilverBarricadeStructureTools
             Patches.OnStructureDestroying += Patches_OnStructureDestroying;
             if (cfg.HeightLimiter.EnabledHeightLimitedCommands) R.Commands.OnExecuteCommand += HeightLimiter.Commands_OnExecuteCommand;
             U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
+            foreach (var pl in Provider.clients)
+            {
+                OnlinePlayerGroupManager.Events_OnPlayerConnected(UnturnedPlayer.FromSteamPlayer(pl));
+            }
             U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
 
-            // auto check timer
+            // Auto Toggle and Gen Timer
             AutoCheckTimer = new System.Timers.Timer(cfg.AutoToggleAndUnlimited.SecondsBetweenChecks * 1000);
             AutoCheckTimer.Elapsed += AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
             AutoCheckTimer.AutoReset = true;
             AutoCheckTimer.Enabled = true;
+
+            // Decay Timer
+            DecayTimer = new System.Timers.Timer(cfg.Decay.IntervalSeconds * 1000);
+            DecayTimer.Elapsed += Decay.DecayTimer_Elapsed;
+            DecayTimer.AutoReset = true;
+            DecayTimer.Enabled = true;
 
             OnlineGroups = new List<ulong>();
             OnlinePlayers = new List<ulong>();
@@ -55,11 +68,7 @@ namespace SilverBarricadeStructureTools
         }
 
         // todo:
-        // track claim flags and generator placement
-        // decay
-        // healing
         // offline/online raid prot
-        // bypass perm for object placements
         // raid logs
 
         private void Patches_OnStructureDestroying(StructureDrop drop)
@@ -81,6 +90,7 @@ namespace SilverBarricadeStructureTools
 
         private void StructurePlace(Structure structure, ItemStructureAsset asset, ref Vector3 point, ref float angle_x, ref float angle_y, ref float angle_z, ref ulong owner, ref ulong group, ref bool shouldAllow)
         {
+            if (CheckIfBypassPlacements(owner)) return;
             if (cfg.RoadPlaceBlocking.Enabled)
                 RoadPlaceBlocking.Execute(asset.id, point, ref shouldAllow, owner);
             if (cfg.HeightLimiter.Enabled)
@@ -104,6 +114,7 @@ namespace SilverBarricadeStructureTools
 
         private void BarricadePlace(Barricade barricade, ItemBarricadeAsset asset, Transform hit, ref Vector3 point, ref float angle_x, ref float angle_y, ref float angle_z, ref ulong owner, ref ulong group, ref bool shouldAllow)
         {
+            if (CheckIfBypassPlacements(owner)) return;
             if (hit != null && hit.TryGetComponent<InteractableVehicle>(out InteractableVehicle vehicle))
             {
                 if (cfg.VehicleBarricadeBlacklist.Enabled)
@@ -118,6 +129,14 @@ namespace SilverBarricadeStructureTools
                 if (cfg.HeightLimiter.Enabled)
                     HeightLimiter.CheckPlacement((CSteamID)owner, point, ref shouldAllow, asset.id);
             }
+        }
+
+        public bool CheckIfBypassPlacements(ulong owner)
+        {
+            if (!cfg.BypassPlacementsAllow) return false;
+            var p = UnturnedPlayer.FromCSteamID((CSteamID)owner);
+            if (p.HasPermission(cfg.BypassPlacementsPerm) || p.IsAdmin) return true;
+            else return false;
         }
 
         protected override void Unload()
@@ -135,6 +154,8 @@ namespace SilverBarricadeStructureTools
 
             AutoCheckTimer.Stop();
             AutoCheckTimer.Elapsed -= AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
+            DecayTimer.Stop();
+            DecayTimer.Elapsed -= Decay.DecayTimer_Elapsed;
 
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been unloaded");
         }

@@ -11,15 +11,20 @@ namespace SilverBarricadeStructureTools
     public class Config : IRocketPluginConfiguration
     {
         public string MessageColor;
+        public bool BypassPlacementsAllow;
+        public string BypassPlacementsPerm;
         public bool BlockBuildingOnOthersVehicles;
         public mVehicleBarricadeBlacklist VehicleBarricadeBlacklist;
         public mRoadPlaceBlocking RoadPlaceBlocking;
         public List<ulong> UnbreakablesIds;
         public mAutoToggleAndUnlimited AutoToggleAndUnlimited;
         public mHeightLimiter HeightLimiter;
+        public mDecay Decay;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
+            BypassPlacementsAllow = false;
+            BypassPlacementsPerm = "silverbar.bypassplacements";
             BlockBuildingOnOthersVehicles = true;
             VehicleBarricadeBlacklist = new mVehicleBarricadeBlacklist()
             {
@@ -66,6 +71,15 @@ namespace SilverBarricadeStructureTools
                         DynamicHeight = 20
                     }
                 }
+            };
+            Decay = new mDecay()
+            {
+                Enabled = true,
+                DamageWhileOwnerOnline = false,
+                DamagePercent = 1,
+                HealPercent = 4,
+                IntervalSeconds = 6048,
+                DecayIgnoreOwnerGroupIds = new List<ulong>() { 69 }
             };
         }
     }

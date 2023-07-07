@@ -29,12 +29,11 @@ namespace SilverBarricadeStructureTools.SubPlugins
                     try
                     {
                         if (x.interactable == null) continue;
-                        var b = BarricadeManager.FindBarricadeByRootTransform(x.interactable.transform);
-                        var owner = b.GetServersideData().owner;
-                        var group = b.GetServersideData().group;
-                        if (b.interactable != null)
+                        var owner = x.GetServersideData().owner;
+                        var group = x.GetServersideData().group;
+                        if (x.interactable != null)
                         {
-                            if (b.interactable is InteractableGenerator gen && (SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(group)))
+                            if (x.interactable is InteractableGenerator gen && (SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(group)))
                             {
                                 if (gen.fuel < gen.capacity)
                                 {
@@ -45,21 +44,21 @@ namespace SilverBarricadeStructureTools.SubPlugins
                                     BarricadeManager.ServerSetGeneratorPowered(gen, true);
                                 }
                             }
-                            if (b.interactable is InteractableSpot spot && (SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(group)))
+                            if (x.interactable is InteractableSpot spot && (SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(group)))
                             {
                                 if (!spot.isPowered)
                                 {
                                     BarricadeManager.ServerSetSpotPowered(spot, true);
                                 }
                             }
-                            if (b.interactable is InteractableOxygenator oxy && (SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(group)))
+                            if (x.interactable is InteractableOxygenator oxy && (SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(group)))
                             {
                                 if (!oxy.isPowered)
                                 {
                                     BarricadeManager.ServerSetOxygenatorPowered(oxy, true);
                                 }
                             }
-                            if (b.interactable is InteractableFire fire && (SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(group)))
+                            if (x.interactable is InteractableFire fire && (SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(group)))
                             {
                                 if (!fire.isLit)
                                 {
