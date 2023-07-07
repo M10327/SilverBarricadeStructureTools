@@ -1,0 +1,68 @@
+﻿using SDG.Unturned;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SilverBarricadeStructureTools.SubPlugins
+{
+    public static class AutoToggleAndUnlimited
+    {
+        public static async void Execute()
+        {
+            await Task.Delay(1);
+            foreach (var region in BarricadeManager.BarricadeRegions)
+            {
+                foreach (var x in region.drops)
+                {
+                    try
+                    {
+                        var b = BarricadeManager.FindBarricadeByRootTransform(x.interactable.transform);
+                        var owner = b.GetServersideData().owner;
+                        var group = b.GetServersideData().group;
+                        if (b.interactable != null)
+                        {
+                            if (b.interactable is InteractableGenerator gen && (SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Generators.Contains(group)))
+                            {
+                                if (gen.fuel < gen.capacity)
+                                {
+                                    BarricadeManager.sendFuel(x.model.transform, gen.capacity);
+                                }
+                                if (!gen.isPowered)
+                                {
+                                    BarricadeManager.ServerSetGeneratorPowered(gen, true);
+                                }
+                            }
+                            if (b.interactable is InteractableSpot spot && (SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Lights.Contains(group)))
+                            {
+                                if (!spot.isPowered)
+                                {
+                                    BarricadeManager.ServerSetSpotPowered(spot, true);
+                                }
+                            }
+                            if (b.interactable is InteractableOxygenator oxy && (SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Oxygenators.Contains(group)))
+                            {
+                                if (!oxy.isPowered)
+                                {
+                                    BarricadeManager.ServerSetOxygenatorPowered(oxy, true);
+                                }
+                            }
+                            if (b.interactable is InteractableFire fire && (SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(owner) || SBST.Instance.cfg.AutoToggleAndUnlimited.Fires.Contains(group)))
+                            {
+                                if (!fire.isLit)
+                                {
+                                    BarricadeManager.ServerSetFireLit(fire, true);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Rocket.Core.Logging.Logger.LogError($"Caught Exception: {ex}");
+                    }
+                }
+            }
+        }
+    }
+}
