@@ -40,7 +40,7 @@ namespace SilverBarricadeStructureTools
 
             // auto check timer
             AutoCheckTimer = new System.Timers.Timer(cfg.AutoToggleAndUnlimited.SecondsBetweenChecks * 1000);
-            AutoCheckTimer.Elapsed += AutoCheckTimer_Elapsed;
+            AutoCheckTimer.Elapsed += AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
             AutoCheckTimer.AutoReset = true;
             AutoCheckTimer.Enabled = true;
 
@@ -50,14 +50,6 @@ namespace SilverBarricadeStructureTools
             OnlinePlayers = new List<ulong>();
 
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
-        }
-
-        private void AutoCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (cfg.AutoToggleAndUnlimited.Generators.Count > 0 || cfg.AutoToggleAndUnlimited.Lights.Count > 0)
-            {
-                TaskDispatcher.QueueOnMainThread(() => AutoToggleAndUnlimited.Execute());
-            }
         }
 
         private void Patches_OnStructureDestroying(StructureDrop drop)
@@ -125,7 +117,7 @@ namespace SilverBarricadeStructureTools
             Patches.OnStructureDestroying -= Patches_OnStructureDestroying;
 
             AutoCheckTimer.Stop();
-            AutoCheckTimer.Elapsed -= AutoCheckTimer_Elapsed;
+            AutoCheckTimer.Elapsed -= AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
 
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been unloaded");
         }

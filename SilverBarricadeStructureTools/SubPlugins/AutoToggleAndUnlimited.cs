@@ -1,4 +1,5 @@
-﻿using SDG.Unturned;
+﻿using Rocket.Core.Utils;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,17 @@ namespace SilverBarricadeStructureTools.SubPlugins
 {
     public static class AutoToggleAndUnlimited
     {
+        public static void AutoCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (SBST.Instance.cfg.AutoToggleAndUnlimited.Enabled)
+            {
+                TaskDispatcher.QueueOnMainThread(() => Execute());
+            }
+        }
+
         public static async void Execute()
         {
+            if (!Level.isLoaded) return;
             await Task.Delay(1);
             foreach (var region in BarricadeManager.BarricadeRegions)
             {
@@ -18,6 +28,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
                 {
                     try
                     {
+                        if (x.interactable == null) continue;
                         var b = BarricadeManager.FindBarricadeByRootTransform(x.interactable.transform);
                         var owner = b.GetServersideData().owner;
                         var group = b.GetServersideData().group;
