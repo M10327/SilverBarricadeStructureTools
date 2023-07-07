@@ -43,10 +43,6 @@ namespace SilverBarricadeStructureTools
             Patches.OnStructureDestroying += Patches_OnStructureDestroying;
             if (cfg.HeightLimiter.EnabledHeightLimitedCommands) R.Commands.OnExecuteCommand += HeightLimiter.Commands_OnExecuteCommand;
             U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
-            foreach (var pl in Provider.clients)
-            {
-                OnlinePlayerGroupManager.Events_OnPlayerConnected(UnturnedPlayer.FromSteamPlayer(pl));
-            }
             U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
 
             // Auto Toggle and Gen Timer
@@ -63,13 +59,17 @@ namespace SilverBarricadeStructureTools
 
             OnlineGroups = new List<ulong>();
             OnlinePlayers = new List<ulong>();
+            foreach (var pl in Provider.clients)
+            {
+                OnlinePlayerGroupManager.Events_OnPlayerConnected(UnturnedPlayer.FromSteamPlayer(pl));
+            }
 
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
         }
 
         // todo:
-        // offline/online raid prot
         // raid logs
+        // option for offline raid prot to require claim flags
 
         private void Patches_OnStructureDestroying(StructureDrop drop)
         {
