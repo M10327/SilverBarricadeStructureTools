@@ -103,7 +103,7 @@ namespace SilverBarricadeStructureTools
             var barricade = BarricadeManager.FindBarricadeByRootTransform(barricadeTransform);
             var data = barricade.GetServersideData();
             Unbreakables.Execute(data.owner, data.group, ref shouldAllow, barricade.asset.itemName, barricade.asset.build, instigatorSteamID);
-            if (cfg.OfflineRaidProt.Enabled) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
+            if (cfg.OfflineRaidProt.Enabled && data.barricade.asset.build != EBuild.FARM) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
             if (barricadeTransform.parent != null && barricadeTransform.parent.TryGetComponent<InteractableVehicle>(out InteractableVehicle vehicle))
             {
                 
