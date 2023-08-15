@@ -98,7 +98,10 @@ namespace SilverBarricadeStructureTools
             BuildableRepairDelay = new mBuildableRepairDelay()
             {
                 Enabled = true,
-                RepairDelaySeconds = 10
+                RepairDelaySeconds = 10,
+                UseChat = false,
+                UseUI = true,
+                UiId = 28001,
             };
         }
     }

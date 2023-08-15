@@ -1,4 +1,6 @@
 ﻿using Rocket.Unturned.Chat;
+using Rocket.Unturned.Items;
+using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
 using System;
@@ -14,13 +16,21 @@ namespace SilverBarricadeStructureTools.SubPlugins
     {
         public static void CheckIfCanRepair(NetId id, CSteamID instigatorSteamID, ref bool shouldAllow)
         {
+            var cfg = SBST.Instance.cfg;
             if (!SBST.Instance.TimeLastDamaged.ContainsKey(id)) return;
             long delta = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - SBST.Instance.TimeLastDamaged[id];
-            if (delta < SBST.Instance.cfg.BuildableRepairDelay.RepairDelaySeconds)
+            if (delta < cfg.BuildableRepairDelay.RepairDelaySeconds)
             {
                 shouldAllow = false;
-                long timeLeft = SBST.Instance.cfg.BuildableRepairDelay.RepairDelaySeconds - delta;
-                UnturnedChat.Say(instigatorSteamID, SBST.Instance.Translate("RepairDelay", timeLeft.ToString()), SBST.Instance.MessageColor);
+                long timeLeft = cfg.BuildableRepairDelay.RepairDelaySeconds - delta;
+                if (cfg.BuildableRepairDelay.UseChat)
+                    UnturnedChat.Say(instigatorSteamID, SBST.Instance.Translate("RepairDelay", timeLeft.ToString()), SBST.Instance.MessageColor);
+                if (cfg.BuildableRepairDelay.UseUI)
+                {
+                    UnturnedPlayer p = UnturnedPlayer.FromCSteamID(instigatorSteamID);
+                    EffectManager.askEffectClearByID(cfg.BuildableRepairDelay.UiId, p.Player.channel.owner.transportConnection);
+                    EffectManager.sendUIEffect(cfg.BuildableRepairDelay.UiId, (short)(cfg.BuildableRepairDelay.UiId + 10), p.Player.channel.owner.transportConnection, true, SBST.Instance.Translate("RepairDelay", timeLeft.ToString()));
+                }
             }
         }
 

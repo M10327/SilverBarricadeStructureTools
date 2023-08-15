@@ -11,7 +11,9 @@ namespace SilverBarricadeStructureTools.Models
     {
         [XmlAttribute("Enabled")]
         public bool Enabled { get; set; }
-        [XmlAttribute("RepairDelay")]
         public int RepairDelaySeconds { get; set; }
+        public bool UseChat { get; set; }
+        public bool UseUI { get; set; }
+        public ushort UiId { get; set; }
     }
 }
