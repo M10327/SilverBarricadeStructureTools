@@ -85,6 +85,7 @@
     <Compile Include="Models\DecayBuildableInfo.cs" />
     <Compile Include="Models\eDecayOutcome.cs" />
     <Compile Include="Models\mAutoToggleAndUnlimited.cs" />
+    <Compile Include="Models\mBuildableRepairDelay.cs" />
     <Compile Include="Models\mDecay.cs" />
     <Compile Include="Models\mHeightLimiter.cs" />
     <Compile Include="Models\mOfflineRaidProt.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="SBST.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubPlugins\AutoToggleAndUnlimited.cs" />
+    <Compile Include="SubPlugins\BuildableRepairDelay.cs" />
     <Compile Include="SubPlugins\Decay.cs" />
     <Compile Include="SubPlugins\HeightLimiter.cs" />
     <Compile Include="SubPlugins\OfflineRaidProt.cs" />

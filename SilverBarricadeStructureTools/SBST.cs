@@ -29,6 +29,7 @@ namespace SilverBarricadeStructureTools
         private static System.Timers.Timer DecayTimer { get; set; }
         public List<ulong> OnlinePlayers { get; set; }
         public List<ulong> OnlineGroups { get; set; }
+        public Dictionary<NetId, long> TimeLastDamaged { get; set; }
         protected override void Load()
         {
             Instance = this;
@@ -38,12 +39,15 @@ namespace SilverBarricadeStructureTools
             BarricadeManager.onDamageBarricadeRequested += BarricadeDamage;
             StructureManager.onDeployStructureRequested += StructurePlace;
             StructureManager.onDamageStructureRequested += StructureDamage;
+            BarricadeManager.OnRepairRequested += BarricadeRepair;
+            StructureManager.OnRepairRequested += StructureRepair;
             Patches.PatchAll();
             Patches.OnBarricadeDestroying += Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying += Patches_OnStructureDestroying;
             if (cfg.HeightLimiter.EnabledHeightLimitedCommands) R.Commands.OnExecuteCommand += HeightLimiter.Commands_OnExecuteCommand;
             U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
             U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
+            TimeLastDamaged = new Dictionary<NetId, long>();
 
             // Auto Toggle and Gen Timer
             AutoCheckTimer = new System.Timers.Timer(cfg.AutoToggleAndUnlimited.SecondsBetweenChecks * 1000);
@@ -67,6 +71,22 @@ namespace SilverBarricadeStructureTools
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
         }
 
+        private void StructureRepair(CSteamID instigatorSteamID, Transform structureTransform, ref float pendingTotalHealing, ref bool shouldAllow)
+        {
+            var structure = StructureManager.FindStructureByRootTransform(structureTransform);
+            var data = structure.GetServersideData();
+            if (cfg.BuildableRepairDelay.Enabled) 
+                BuildableRepairDelay.CheckIfCanRepair(structure.GetNetId(), instigatorSteamID, ref shouldAllow);
+        }
+
+        private void BarricadeRepair(CSteamID instigatorSteamID, Transform barricadeTransform, ref float pendingTotalHealing, ref bool shouldAllow)
+        {
+            var barricade = BarricadeManager.FindBarricadeByRootTransform(barricadeTransform);
+            var data = barricade.GetServersideData();
+            if (cfg.BuildableRepairDelay.Enabled)
+                BuildableRepairDelay.CheckIfCanRepair(barricade.GetNetId(), instigatorSteamID, ref shouldAllow);
+        }
+
         // todo:
         // raid logs
         // option for offline raid prot to require claim flags
@@ -87,6 +107,9 @@ namespace SilverBarricadeStructureTools
             var data = structure.GetServersideData();
             Unbreakables.Execute(data.owner, data.group, ref shouldAllow, structure.asset.itemName, null, instigatorSteamID);
             if (cfg.OfflineRaidProt.Enabled) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
+            if (cfg.BuildableRepairDelay.Enabled)
+                BuildableRepairDelay.SetLastDamaged(structure.GetNetId());
+
         }
 
         private void StructurePlace(Structure structure, ItemStructureAsset asset, ref Vector3 point, ref float angle_x, ref float angle_y, ref float angle_z, ref ulong owner, ref ulong group, ref bool shouldAllow)
@@ -110,7 +133,8 @@ namespace SilverBarricadeStructureTools
             }
             else
             {
-                
+                if (cfg.BuildableRepairDelay.Enabled)
+                    BuildableRepairDelay.SetLastDamaged(barricade.GetNetId());
             }
         }
 
@@ -151,6 +175,8 @@ namespace SilverBarricadeStructureTools
             BarricadeManager.onDamageBarricadeRequested -= BarricadeDamage;
             StructureManager.onDeployStructureRequested -= StructurePlace;
             StructureManager.onDamageStructureRequested -= StructureDamage;
+            BarricadeManager.OnRepairRequested -= BarricadeRepair;
+            StructureManager.OnRepairRequested -= StructureRepair;
             Patches.UnpatchAll();
             Patches.OnBarricadeDestroying -= Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying -= Patches_OnStructureDestroying;
@@ -176,6 +202,7 @@ namespace SilverBarricadeStructureTools
             { "MaxHeightDynamic", "You cannot build more than {0}m above the ground!" },
             { "CommandBlocked", "You cannot use the {0} command above {1}m!" },
             { "PlacementBlockedVehicle", "You cannot build on {0}" },
+            { "RepairDelay", "You must wait {0} more seconds to repair this!" },
         };
     }
 }

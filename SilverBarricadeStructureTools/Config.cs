@@ -22,6 +22,7 @@ namespace SilverBarricadeStructureTools
         public mDecay Decay;
         public mOfflineRaidProt OfflineRaidProt;
         public mVehicleNoPlaceOn VehicleNoPlaceOn;
+        public mBuildableRepairDelay BuildableRepairDelay;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -31,7 +32,7 @@ namespace SilverBarricadeStructureTools
             VehicleBarricadeBlacklist = new mVehicleBarricadeBlacklist()
             {
                 Enabled = true,
-                Barricades = new List<ushort>() { 288, 289, 290, 291, 292, 293, 294, 295, 1243, 1309, 1310, 1311, 1312, 1313, 1314, 17623, 17624, 17625, 17626, 17627, 17628, 17629, 17630, 17631, 17632, 17633, 17634, 17635, 17636, 9821 },                
+                Barricades = new List<ushort>() { 288, 289, 290, 291, 292, 293, 294, 295, 1243, 1309, 1310, 1311, 1312, 1313, 1314, 17623, 17624, 17625, 17626, 17627, 17628, 17629, 17630, 17631, 17632, 17633, 17634, 17635, 17636, 9821 },
             };
             RoadPlaceBlocking = new mRoadPlaceBlocking()
             {
@@ -93,6 +94,11 @@ namespace SilverBarricadeStructureTools
             {
                 Enabled = true,
                 VehicleIDs = new List<ushort>() { 26108 }
+            };
+            BuildableRepairDelay = new mBuildableRepairDelay()
+            {
+                Enabled = true,
+                RepairDelaySeconds = 10
             };
         }
     }
