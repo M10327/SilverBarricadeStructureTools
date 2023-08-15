@@ -123,6 +123,8 @@ namespace SilverBarricadeStructureTools
                     VehicleBarricadeBlacklist.Execute(asset, owner, ref shouldAllow);
                 if (cfg.BlockBuildingOnOthersVehicles)
                     VehicleBuildProtection.Execute(asset, owner, group, ref shouldAllow, vehicle);
+                if (cfg.VehicleNoPlaceOn.Enabled)
+                    VehicleNoPlaceOn.Execute(vehicle, owner, ref shouldAllow);
             }
             else
             {
@@ -172,7 +174,8 @@ namespace SilverBarricadeStructureTools
             { "MayNotDamage", "This {0} is protected from all damage!" },
             { "MaxHeight", "You cannot build over the max height limit! ({0}m)" },
             { "MaxHeightDynamic", "You cannot build more than {0}m above the ground!" },
-            { "CommandBlocked", "You cannot use the {0} command above {1}m!" }
+            { "CommandBlocked", "You cannot use the {0} command above {1}m!" },
+            { "PlacementBlockedVehicle", "You cannot build on {0}" },
         };
     }
 }

@@ -21,6 +21,7 @@ namespace SilverBarricadeStructureTools
         public mHeightLimiter HeightLimiter;
         public mDecay Decay;
         public mOfflineRaidProt OfflineRaidProt;
+        public mVehicleNoPlaceOn VehicleNoPlaceOn;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -87,6 +88,11 @@ namespace SilverBarricadeStructureTools
                 Enabled = true,
                 OnlineMulti = 1.0f,
                 OfflineMulti = 0.5f
+            };
+            VehicleNoPlaceOn = new mVehicleNoPlaceOn()
+            {
+                Enabled = true,
+                VehicleIDs = new List<ushort>() { 26108 }
             };
         }
     }

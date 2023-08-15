@@ -90,6 +90,7 @@
     <Compile Include="Models\mOfflineRaidProt.cs" />
     <Compile Include="Models\mRoadPlaceBlocking.cs" />
     <Compile Include="Models\mVehicleBarricadeBlacklist.cs" />
+    <Compile Include="Models\mVehicleNoPlaceOn.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="SBST.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="SubPlugins\Unbreakables.cs" />
     <Compile Include="SubPlugins\VehicleBarricadeBlacklist.cs" />
     <Compile Include="SubPlugins\VehicleBuildProtection.cs" />
+    <Compile Include="SubPlugins\VehicleNoPlaceOn.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
