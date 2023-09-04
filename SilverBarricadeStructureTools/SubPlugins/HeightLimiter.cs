@@ -57,7 +57,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
                 if (cfg.UseDynamicHeight)
                 {
                     var mask = RayMasks.GROUND | RayMasks.GROUND2 | RayMasks.WATER | RayMasks.SMALL | RayMasks.MEDIUM | RayMasks.LARGE;
-                    point.y += 1;
+                    point.y += 5;
                     if (!Physics.Raycast(new Ray(point, Vector3.down), out _, dynMax, mask))
                     {
                         shouldAllow = false;
