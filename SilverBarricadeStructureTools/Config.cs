@@ -23,6 +23,7 @@ namespace SilverBarricadeStructureTools
         public mOfflineRaidProt OfflineRaidProt;
         public mVehicleNoPlaceOn VehicleNoPlaceOn;
         public mBuildableRepairDelay BuildableRepairDelay;
+        public bool AutoReplantEnabled;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -103,6 +104,7 @@ namespace SilverBarricadeStructureTools
                 UseUI = true,
                 UiId = 28001,
             };
+            AutoReplantEnabled = true;
         }
     }
 }

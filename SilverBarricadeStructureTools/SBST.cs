@@ -41,6 +41,7 @@ namespace SilverBarricadeStructureTools
             StructureManager.onDamageStructureRequested += StructureDamage;
             BarricadeManager.OnRepairRequested += BarricadeRepair;
             StructureManager.OnRepairRequested += StructureRepair;
+            InteractableFarm.OnHarvestRequested_Global += InteractableFarm_OnHarvestRequested_Global;
             Patches.PatchAll();
             Patches.OnBarricadeDestroying += Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying += Patches_OnStructureDestroying;
@@ -69,6 +70,11 @@ namespace SilverBarricadeStructureTools
             }
 
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
+        }
+
+        private void InteractableFarm_OnHarvestRequested_Global(InteractableFarm harvestable, SteamPlayer instigatorPlayer, ref bool shouldAllow)
+        {
+            if (cfg.AutoReplantEnabled) AutoReplant.Execute(harvestable, instigatorPlayer, ref shouldAllow);
         }
 
         private void StructureRepair(CSteamID instigatorSteamID, Transform structureTransform, ref float pendingTotalHealing, ref bool shouldAllow)
@@ -177,6 +183,7 @@ namespace SilverBarricadeStructureTools
             StructureManager.onDamageStructureRequested -= StructureDamage;
             BarricadeManager.OnRepairRequested -= BarricadeRepair;
             StructureManager.OnRepairRequested -= StructureRepair;
+            InteractableFarm.OnHarvestRequested_Global -= InteractableFarm_OnHarvestRequested_Global;
             Patches.UnpatchAll();
             Patches.OnBarricadeDestroying -= Patches_OnBarricadeDestroying;
             Patches.OnStructureDestroying -= Patches_OnStructureDestroying;

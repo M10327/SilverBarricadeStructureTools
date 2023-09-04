@@ -95,6 +95,7 @@
     <Compile Include="Patches.cs" />
     <Compile Include="SBST.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubPlugins\AutoReplant.cs" />
     <Compile Include="SubPlugins\AutoToggleAndUnlimited.cs" />
     <Compile Include="SubPlugins\BuildableRepairDelay.cs" />
     <Compile Include="SubPlugins\Decay.cs" />
