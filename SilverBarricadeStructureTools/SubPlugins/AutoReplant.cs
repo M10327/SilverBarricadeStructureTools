@@ -27,10 +27,10 @@ namespace SilverBarricadeStructureTools.SubPlugins
             var page = plants[0].page;
             var index = p.Inventory.getIndex(page, plants[0].jar.x, plants[0].jar.y);
             p.Inventory.removeItem(page, index);
-
+            
             var seedBarricadeToPlace = new Barricade(bar.asset);
             var newPlant = BarricadeManager.dropNonPlantedBarricade(seedBarricadeToPlace, plant.transform.position, plant.transform.rotation, bar.GetServersideData().owner, bar.GetServersideData().group);
-
+            BarricadeManager.updateFarm(newPlant.transform, plant.planted, true);
         }
     }
 }
