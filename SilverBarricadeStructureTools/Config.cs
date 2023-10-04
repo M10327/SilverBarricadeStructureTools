@@ -24,6 +24,7 @@ namespace SilverBarricadeStructureTools
         public mVehicleNoPlaceOn VehicleNoPlaceOn;
         public mBuildableRepairDelay BuildableRepairDelay;
         public bool AutoReplantEnabled;
+        public mVehicleBuildCap VehicleBuildCap;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -105,6 +106,19 @@ namespace SilverBarricadeStructureTools
                 UiId = 28001,
             };
             AutoReplantEnabled = true;
+            VehicleBuildCap = new mVehicleBuildCap()
+            {
+                Enabled = true,
+                BuildCaps = new List<VehicleBuildCapObject>()
+                {
+                    new VehicleBuildCapObject()
+                    {
+                        Name = "Sentries",
+                        Ids = new List<ushort>() { 1244, 1372, 1373 },
+                        MaxAllowed = 5
+                    }
+                }
+            };
         }
     }
 }

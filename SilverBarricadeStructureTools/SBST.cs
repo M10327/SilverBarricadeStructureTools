@@ -155,6 +155,8 @@ namespace SilverBarricadeStructureTools
                     VehicleBuildProtection.Execute(asset, owner, group, ref shouldAllow, vehicle);
                 if (cfg.VehicleNoPlaceOn.Enabled)
                     VehicleNoPlaceOn.Execute(vehicle, owner, ref shouldAllow);
+                if (cfg.VehicleBuildCap.Enabled)
+                    VehicleBuildCap.CheckCap(vehicle, owner, ref shouldAllow);
             }
             else
             {
@@ -210,6 +212,7 @@ namespace SilverBarricadeStructureTools
             { "CommandBlocked", "You cannot use the {0} command above {1}m!" },
             { "PlacementBlockedVehicle", "You cannot build on {0}" },
             { "RepairDelay", "You must wait {0} more seconds to repair this!" },
+            { "VehicleBuildCap", "You cannot place more than {0} {1} on a vehicle." },
         };
     }
 }
