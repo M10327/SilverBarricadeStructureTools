@@ -11,7 +11,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
 {
     public static class VehicleBuildCap
     {
-        public static void CheckCap(InteractableVehicle vehicle, ulong owner, ref bool shouldAllow)
+        public static void CheckCap(InteractableVehicle vehicle, ulong owner, ref bool shouldAllow, ushort id)
         {
             BarricadeRegion region;
             BarricadeManager.tryGetPlant(vehicle.transform, out byte _, out byte _, out ushort _, out region);
@@ -25,11 +25,12 @@ namespace SilverBarricadeStructureTools.SubPlugins
             }
             foreach (var check in SBST.Instance.cfg.VehicleBuildCap.BuildCaps)
             {
+                if (!check.Ids.Contains(id)) continue;
                 int amount = 0;
-                foreach (var id in check.Ids)
+                foreach (var checkId in check.Ids)
                 {
-                    if (barricadeCount.ContainsKey(id))
-                        amount += barricadeCount[id];
+                    if (barricadeCount.ContainsKey(checkId))
+                        amount += barricadeCount[checkId];
                 }
                 if (amount == check.MaxAllowed)
                 {

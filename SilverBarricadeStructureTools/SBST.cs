@@ -156,7 +156,7 @@ namespace SilverBarricadeStructureTools
                 if (cfg.VehicleNoPlaceOn.Enabled)
                     VehicleNoPlaceOn.Execute(vehicle, owner, ref shouldAllow);
                 if (cfg.VehicleBuildCap.Enabled)
-                    VehicleBuildCap.CheckCap(vehicle, owner, ref shouldAllow);
+                    VehicleBuildCap.CheckCap(vehicle, owner, ref shouldAllow, barricade.asset.id);
             }
             else
             {
