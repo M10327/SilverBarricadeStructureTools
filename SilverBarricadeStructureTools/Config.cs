@@ -25,6 +25,7 @@ namespace SilverBarricadeStructureTools
         public mBuildableRepairDelay BuildableRepairDelay;
         public bool AutoReplantEnabled;
         public mVehicleBuildCap VehicleBuildCap;
+        public mLootProtect LootProtect;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -118,6 +119,14 @@ namespace SilverBarricadeStructureTools
                         MaxAllowed = 5
                     }
                 }
+            };
+            LootProtect = new mLootProtect()
+            {
+                Enabled = true,
+                AllowAllVulnerable = true,
+                Resize = -15,
+                Height = 900,
+                AllowedIds = new List<ushort>() { 1070 }
             };
         }
     }
