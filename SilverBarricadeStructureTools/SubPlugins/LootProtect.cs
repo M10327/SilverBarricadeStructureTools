@@ -21,6 +21,12 @@ namespace SilverBarricadeStructureTools.SubPlugins
             if (position.y > (bounds.center.y + SBST.Instance.cfg.LootProtect.Height)) return;
             bounds.Expand(SBST.Instance.cfg.LootProtect.Resize);
             if (!bounds.ContainsXZ(position)) return;
+            if (SBST.Instance.cfg.LootProtect.BlockedIds.Contains(itemId))
+            {
+                UnturnedChat.Say((CSteamID)playerId, SBST.Instance.Translate("LootProtect", Name), SBST.Instance.MessageColor);
+                shouldAllow = false;
+                return;
+            }
             if (breakableWithLowcal && SBST.Instance.cfg.LootProtect.AllowAllVulnerable) return;
             if (SBST.Instance.cfg.LootProtect.AllowedIds.Contains(itemId)) return;
             UnturnedChat.Say((CSteamID)playerId, SBST.Instance.Translate("LootProtect", Name), SBST.Instance.MessageColor);

@@ -126,7 +126,8 @@ namespace SilverBarricadeStructureTools
                 AllowAllVulnerable = true,
                 Resize = -15,
                 Height = 900,
-                AllowedIds = new List<ushort>() { 1070 }
+                AllowedIds = new List<ushort>() { 1070 },
+                BlockedIds = new List<ushort>() { 288, 289, 290, 291, 292, 293, 294, 295 }
             };
         }
     }

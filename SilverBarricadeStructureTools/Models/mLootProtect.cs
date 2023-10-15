@@ -18,5 +18,6 @@ namespace SilverBarricadeStructureTools.Models
         [XmlAttribute("Height")]
         public int Height { get; set; }
         public List<ushort> AllowedIds { get; set; }
+        public List<ushort> BlockedIds { get; set; }
     }
 }
