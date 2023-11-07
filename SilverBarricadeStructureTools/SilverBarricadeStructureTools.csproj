@@ -96,6 +96,7 @@
     <Compile Include="Models\mBuildableRepairDelay.cs" />
     <Compile Include="Models\mDecay.cs" />
     <Compile Include="Models\mHeightLimiter.cs" />
+    <Compile Include="Models\mLocalBuildLimiter.cs" />
     <Compile Include="Models\mLootProtect.cs" />
     <Compile Include="Models\mOfflineRaidProt.cs" />
     <Compile Include="Models\mRoadPlaceBlocking.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="SubPlugins\BuildableRepairDelay.cs" />
     <Compile Include="SubPlugins\Decay.cs" />
     <Compile Include="SubPlugins\HeightLimiter.cs" />
+    <Compile Include="SubPlugins\LocalBuildLimiter.cs" />
     <Compile Include="SubPlugins\LootProtect.cs" />
     <Compile Include="SubPlugins\OfflineRaidProt.cs" />
     <Compile Include="SubPlugins\OnlinePlayerGroupManager.cs" />

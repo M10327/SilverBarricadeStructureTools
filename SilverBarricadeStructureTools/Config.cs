@@ -26,6 +26,7 @@ namespace SilverBarricadeStructureTools
         public bool AutoReplantEnabled;
         public mVehicleBuildCap VehicleBuildCap;
         public mLootProtect LootProtect;
+        public mLocalBuildLimiter LocalBuildLimiter;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -128,6 +129,21 @@ namespace SilverBarricadeStructureTools
                 Height = 900,
                 AllowedIds = new List<ushort>() { 1070 },
                 BlockedIds = new List<ushort>() { 288, 289, 290, 291, 292, 293, 294, 295 }
+            };
+            LocalBuildLimiter = new mLocalBuildLimiter()
+            {
+                Enabled = true,
+                Barricades = new List<BuildLimitObject>()
+                {
+                    new BuildLimitObject()
+                    {
+                        CheckRange = 32,
+                        Name = "Claimflags",
+                        Limit = 10,
+                        Ids = new List<ushort>() { 1158 }
+                    }
+                },
+                Structures = null
             };
         }
     }

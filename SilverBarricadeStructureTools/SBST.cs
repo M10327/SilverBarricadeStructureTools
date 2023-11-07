@@ -127,6 +127,8 @@ namespace SilverBarricadeStructureTools
                 HeightLimiter.CheckPlacement((CSteamID)owner, point, ref shouldAllow, asset.id);
             if (cfg.LootProtect.Enabled)
                 LootProtect.CheckIfAllowed(owner, point, ref shouldAllow, asset.id, asset.isVulnerable, asset.itemName);
+            if (cfg.LocalBuildLimiter.Enabled)
+                LocalBuildLimiter.CheckStructures(owner, point, ref shouldAllow, asset.id);
         }
 
         private void BarricadeDamage(CSteamID instigatorSteamID, Transform barricadeTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
@@ -168,6 +170,8 @@ namespace SilverBarricadeStructureTools
                     HeightLimiter.CheckPlacement((CSteamID)owner, point, ref shouldAllow, asset.id);
                 if (cfg.LootProtect.Enabled) 
                     LootProtect.CheckIfAllowed(owner, point, ref shouldAllow, asset.id, asset.isVulnerable, asset.itemName);
+                if (cfg.LocalBuildLimiter.Enabled)
+                    LocalBuildLimiter.CheckBarricades(owner, point, ref shouldAllow, asset.id);
             }
         }
 
@@ -218,6 +222,7 @@ namespace SilverBarricadeStructureTools
             { "RepairDelay", "You must wait {0} more seconds to repair this!" },
             { "VehicleBuildCap", "You cannot place more than {0} {1} on a vehicle." },
             { "LootProtect", "You cannot place {0} near loot spawns." },
+            { "LocalBuildLimit", "You cannot place more than {0} {1} within {2}m of each other" },
         };
     }
 }
