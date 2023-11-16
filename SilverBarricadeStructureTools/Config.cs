@@ -27,6 +27,7 @@ namespace SilverBarricadeStructureTools
         public mVehicleBuildCap VehicleBuildCap;
         public mLootProtect LootProtect;
         public mLocalBuildLimiter LocalBuildLimiter;
+        public mProtectionClaims ProtectionClaims;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
@@ -144,6 +145,14 @@ namespace SilverBarricadeStructureTools
                     }
                 },
                 Structures = null
+            };
+            ProtectionClaims = new mProtectionClaims()
+            {
+                Enabled = true,
+                IgnoreDoors = true,
+                IgnoreSentries = true,
+                IgnoreStorage = true,
+                Ids = new List<ushort>() { 1158 }
             };
         }
     }

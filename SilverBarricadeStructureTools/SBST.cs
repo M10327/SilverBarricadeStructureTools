@@ -115,6 +115,8 @@ namespace SilverBarricadeStructureTools
             if (cfg.OfflineRaidProt.Enabled) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
             if (cfg.BuildableRepairDelay.Enabled)
                 BuildableRepairDelay.SetLastDamaged(structure.GetNetId());
+            if (cfg.ProtectionClaims.Enabled)
+                ProtectionClaims.CheckProtected((ulong)instigatorSteamID, structureTransform.position, ref shouldAllow, structure.asset, null);
 
         }
 
@@ -145,6 +147,8 @@ namespace SilverBarricadeStructureTools
             {
                 if (cfg.BuildableRepairDelay.Enabled)
                     BuildableRepairDelay.SetLastDamaged(barricade.GetNetId());
+                if (cfg.ProtectionClaims.Enabled)
+                    ProtectionClaims.CheckProtected((ulong)instigatorSteamID, barricadeTransform.position, ref shouldAllow, null, barricade.asset);
             }
         }
 
