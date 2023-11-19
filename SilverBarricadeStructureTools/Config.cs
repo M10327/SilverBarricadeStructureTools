@@ -149,9 +149,7 @@ namespace SilverBarricadeStructureTools
             ProtectionClaims = new mProtectionClaims()
             {
                 Enabled = true,
-                IgnoreDoors = true,
-                IgnoreSentries = true,
-                IgnoreStorage = true,
+                IgnoreBuildTypes = new List<string>() { "DOOR", "GATE", "HATCH", "SENTRY", "SENTRY_FREEFORM", "STORAGE", "STORAGE_WALL" },
                 Ids = new List<ushort>() { 1158 }
             };
         }

@@ -68,7 +68,8 @@ namespace SilverBarricadeStructureTools
             {
                 OnlinePlayerGroupManager.Events_OnPlayerConnected(UnturnedPlayer.FromSteamPlayer(pl));
             }
-
+            List<string> types = Enum.GetValues(typeof(EBuild)).Cast<EBuild>().ToList().ConvertAll(x => x.ToString());
+            Rocket.Core.Logging.Logger.Log($"Valid Build Types: {string.Join(",", types)}");
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded");
         }
 

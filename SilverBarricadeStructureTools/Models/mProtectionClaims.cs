@@ -11,12 +11,7 @@ namespace SilverBarricadeStructureTools.Models
     {
         [XmlAttribute("Enabled")]
         public bool Enabled { get; set; }
-        [XmlAttribute("IgnoreStorage")]
-        public bool IgnoreStorage { get; set; }
-        [XmlAttribute("IgnoreSentries")]
-        public bool IgnoreSentries { get; set; }
-        [XmlAttribute("IgnoreDoors")]
-        public bool IgnoreDoors { get; set; }
+        public List<string> IgnoreBuildTypes { get; set; }
         public List<ushort> Ids { get; set; }
     }
 }

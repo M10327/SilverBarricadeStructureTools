@@ -20,17 +20,11 @@ namespace SilverBarricadeStructureTools.SubPlugins
             {
                 if (assetB.build == EBuild.FARM)
                     return;
-                if (cfg.IgnoreDoors
-                    && (assetB.build == EBuild.DOOR || assetB.build == EBuild.GATE || assetB.build == EBuild.HATCH))
+                var zz = cfg.IgnoreBuildTypes.ConvertAll(x => (EBuild)Enum.Parse(typeof(EBuild), x.ToUpper()));
+                if (zz.Contains(assetB.build))
                     return;
-                if (cfg.IgnoreSentries && (assetB.build == EBuild.SENTRY || assetB.build == EBuild.SENTRY_FREEFORM))
-                    return;
-                if (cfg.IgnoreStorage && (assetB.build == EBuild.STORAGE || assetB.build == EBuild.STORAGE_WALL))
-                {
-                    return;
-                }
             }
-
+            
             var checkrange = 32 * 32;
             List<RegionCoordinate> regions = new List<RegionCoordinate>();
             Regions.getRegionsInRadius(point, checkrange, regions);
