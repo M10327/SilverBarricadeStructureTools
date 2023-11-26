@@ -132,6 +132,8 @@ namespace SilverBarricadeStructureTools
                 LootProtect.CheckIfAllowed(owner, point, ref shouldAllow, asset.id, asset.isVulnerable, asset.itemName);
             if (cfg.LocalBuildLimiter.Enabled)
                 LocalBuildLimiter.CheckStructures(owner, point, ref shouldAllow, asset.id);
+            if (cfg.PrintPlacementInfoToConsole)
+                PrintPlacementInfo.Structure(asset, point, angle_x, angle_y, angle_z, owner, group);
         }
 
         private void BarricadeDamage(CSteamID instigatorSteamID, Transform barricadeTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
@@ -166,6 +168,8 @@ namespace SilverBarricadeStructureTools
                     VehicleNoPlaceOn.Execute(vehicle, owner, ref shouldAllow);
                 if (cfg.VehicleBuildCap.Enabled)
                     VehicleBuildCap.CheckCap(vehicle, owner, ref shouldAllow, barricade.asset.id);
+                if (cfg.PrintPlacementInfoToConsole)
+                    PrintPlacementInfo.Barricade(asset, point, angle_x, angle_y, angle_z, owner, group, true, vehicle);
             }
             else
             {
@@ -177,6 +181,10 @@ namespace SilverBarricadeStructureTools
                     LootProtect.CheckIfAllowed(owner, point, ref shouldAllow, asset.id, asset.isVulnerable, asset.itemName);
                 if (cfg.LocalBuildLimiter.Enabled)
                     LocalBuildLimiter.CheckBarricades(owner, point, ref shouldAllow, asset.id);
+                if (cfg.PrintPlacementInfoToConsole)
+                    PrintPlacementInfo.Barricade(asset, point, angle_x, angle_y, angle_z, owner, group, false, null);
+                if (cfg.BlockHordesNavList.Count > 0)
+                    BlockHordesPerNav.Check(asset, point, ref shouldAllow, owner);
             }
         }
 
@@ -228,6 +236,7 @@ namespace SilverBarricadeStructureTools
             { "VehicleBuildCap", "You cannot place more than {0} {1} on a vehicle." },
             { "LootProtect", "You cannot place {0} near loot spawns." },
             { "LocalBuildLimit", "You cannot place more than {0} {1} within {2}m of each other" },
+            { "BlockHorde", "You cannot place horde beacons here" }
         };
     }
 }

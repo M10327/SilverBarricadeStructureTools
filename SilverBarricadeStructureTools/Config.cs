@@ -14,6 +14,7 @@ namespace SilverBarricadeStructureTools
         public bool BypassPlacementsAllow;
         public string BypassPlacementsPerm;
         public bool BlockBuildingOnOthersVehicles;
+        public bool PrintPlacementInfoToConsole;
         public mVehicleBarricadeBlacklist VehicleBarricadeBlacklist;
         public mRoadPlaceBlocking RoadPlaceBlocking;
         public List<ulong> UnbreakablesIds;
@@ -28,12 +29,14 @@ namespace SilverBarricadeStructureTools
         public mLootProtect LootProtect;
         public mLocalBuildLimiter LocalBuildLimiter;
         public mProtectionClaims ProtectionClaims;
+        public List<byte> BlockHordesNavList;
         public void LoadDefaults()
         {
             MessageColor = "ffff00";
             BypassPlacementsAllow = false;
             BypassPlacementsPerm = "silverbar.bypassplacements";
             BlockBuildingOnOthersVehicles = true;
+            PrintPlacementInfoToConsole = false;
             VehicleBarricadeBlacklist = new mVehicleBarricadeBlacklist()
             {
                 Enabled = true,
@@ -152,6 +155,7 @@ namespace SilverBarricadeStructureTools
                 IgnoreBuildTypes = new List<string>() { "DOOR", "GATE", "HATCH", "SENTRY", "SENTRY_FREEFORM", "STORAGE", "STORAGE_WALL" },
                 Ids = new List<ushort>() { 1158 }
             };
+            BlockHordesNavList = new List<byte>() { 0 }; 
         }
     }
 }
