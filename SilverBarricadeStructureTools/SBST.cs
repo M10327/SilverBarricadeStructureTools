@@ -8,6 +8,7 @@ using Rocket.Unturned.Chat;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
+using SilverBarricadeStructureTools.Models;
 using SilverBarricadeStructureTools.SubPlugins;
 using Steamworks;
 using System;
@@ -27,9 +28,11 @@ namespace SilverBarricadeStructureTools
         public UnityEngine.Color MessageColor { get; set; }
         private static System.Timers.Timer AutoCheckTimer { get; set; }
         private static System.Timers.Timer DecayTimer { get; set; }
+        private static System.Timers.Timer RaidLogTimer { get; set; }
         public List<ulong> OnlinePlayers { get; set; }
         public List<ulong> OnlineGroups { get; set; }
         public Dictionary<NetId, long> TimeLastDamaged { get; set; }
+        public List<RaidInstance> RaidInstances;
         protected override void Load()
         {
             Instance = this;
@@ -49,6 +52,7 @@ namespace SilverBarricadeStructureTools
             U.Events.OnPlayerConnected += OnlinePlayerGroupManager.Events_OnPlayerConnected;
             U.Events.OnPlayerDisconnected += OnlinePlayerGroupManager.Events_OnPlayerDisconnected;
             TimeLastDamaged = new Dictionary<NetId, long>();
+            RaidInstances = new List<RaidInstance>();
 
             // Auto Toggle and Gen Timer
             AutoCheckTimer = new System.Timers.Timer(cfg.AutoToggleAndUnlimited.SecondsBetweenChecks * 1000);
@@ -61,6 +65,12 @@ namespace SilverBarricadeStructureTools
             DecayTimer.Elapsed += Decay.DecayTimer_Elapsed;
             DecayTimer.AutoReset = true;
             DecayTimer.Enabled = true;
+
+            // Raid Log Timer
+            RaidLogTimer = new System.Timers.Timer(cfg.raidLogs.MaxSecondsBetweenPosts * 1000);
+            RaidLogTimer.Elapsed += RaidLogs.TimeElapsed;
+            RaidLogTimer.AutoReset = true;
+            RaidLogTimer.Enabled = true;
 
             OnlineGroups = new List<ulong>();
             OnlinePlayers = new List<ulong>();
@@ -95,8 +105,8 @@ namespace SilverBarricadeStructureTools
         }
 
         // todo:
-        // raid logs
         // option for offline raid prot to require claim flags
+        // fix auto replant still
 
         private void Patches_OnStructureDestroying(StructureDrop drop)
         {
@@ -118,6 +128,8 @@ namespace SilverBarricadeStructureTools
                 BuildableRepairDelay.SetLastDamaged(structure.GetNetId());
             if (cfg.ProtectionClaims.Enabled)
                 ProtectionClaims.CheckProtected((ulong)instigatorSteamID, structureTransform.position, ref shouldAllow, structure.asset, null);
+            if (cfg.raidLogs.WebhookUrl.Length > 25)
+                RaidLogs.CheckDamagedStructure(instigatorSteamID, structureTransform, ref pendingTotalDamage, ref shouldAllow);
 
         }
 
@@ -144,14 +156,17 @@ namespace SilverBarricadeStructureTools
             if (cfg.OfflineRaidProt.Enabled && data.barricade.asset.build != EBuild.FARM) OfflineRaidProt.ModifyDamage(ref pendingTotalDamage, ref shouldAllow, data.owner, data.group);
             if (barricadeTransform.parent != null && barricadeTransform.parent.TryGetComponent<InteractableVehicle>(out InteractableVehicle vehicle))
             {
-                
+                // only on vehicles
             }
             else
             {
+                // only off vehicles
                 if (cfg.BuildableRepairDelay.Enabled)
                     BuildableRepairDelay.SetLastDamaged(barricade.GetNetId());
                 if (cfg.ProtectionClaims.Enabled)
                     ProtectionClaims.CheckProtected((ulong)instigatorSteamID, barricadeTransform.position, ref shouldAllow, null, barricade.asset);
+                if (cfg.raidLogs.WebhookUrl.Length > 25)
+                    RaidLogs.CheckDamagedBarricade(instigatorSteamID, barricadeTransform, ref pendingTotalDamage, ref shouldAllow);
             }
         }
 
@@ -219,7 +234,9 @@ namespace SilverBarricadeStructureTools
             AutoCheckTimer.Elapsed -= AutoToggleAndUnlimited.AutoCheckTimer_Elapsed;
             DecayTimer.Stop();
             DecayTimer.Elapsed -= Decay.DecayTimer_Elapsed;
-
+            RaidLogTimer.Stop();
+            RaidLogTimer.Elapsed -= RaidLogs.TimeElapsed;
+            RaidLogs.PublishRaidLogsShutdown();
             Rocket.Core.Logging.Logger.Log($"{Name} {Assembly.GetName().Version} has been unloaded");
         }
 

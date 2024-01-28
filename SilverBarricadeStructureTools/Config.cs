@@ -15,6 +15,7 @@ namespace SilverBarricadeStructureTools
         public string BypassPlacementsPerm;
         public bool BlockBuildingOnOthersVehicles;
         public bool PrintPlacementInfoToConsole;
+        public mRaidLogs raidLogs;
         public mVehicleBarricadeBlacklist VehicleBarricadeBlacklist;
         public mRoadPlaceBlocking RoadPlaceBlocking;
         public List<ulong> UnbreakablesIds;
@@ -37,6 +38,15 @@ namespace SilverBarricadeStructureTools
             BypassPlacementsPerm = "silverbar.bypassplacements";
             BlockBuildingOnOthersVehicles = true;
             PrintPlacementInfoToConsole = false;
+            raidLogs = new mRaidLogs()
+            {
+                WebhookUrl = "Discord url here",
+                Name = "Raid Logs",
+                IconUrl = "https://i.imgur.com/xOO7Acd.png",
+                RaidsPerEmbed = 8,
+                MaxSecondsBetweenPosts = 30,
+                IgnoreWeaponIds = new List<ushort>() { 25836 }
+            };
             VehicleBarricadeBlacklist = new mVehicleBarricadeBlacklist()
             {
                 Enabled = true,
