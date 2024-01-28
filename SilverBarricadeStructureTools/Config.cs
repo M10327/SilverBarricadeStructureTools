@@ -45,7 +45,8 @@ namespace SilverBarricadeStructureTools
                 IconUrl = "https://i.imgur.com/xOO7Acd.png",
                 RaidsPerEmbed = 8,
                 MaxSecondsBetweenPosts = 30,
-                IgnoreWeaponIds = new List<ushort>() { 25836 }
+                IgnoreWeaponIds = new List<ushort>() { 25836 },
+                IgnorePlaceableIds = new List<ushort>() { 1241, 1393, 1691, 26019, 25880, 26259, 26260 }
             };
             VehicleBarricadeBlacklist = new mVehicleBarricadeBlacklist()
             {

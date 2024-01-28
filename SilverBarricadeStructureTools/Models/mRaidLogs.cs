@@ -14,5 +14,6 @@ namespace SilverBarricadeStructureTools.Models
         public int RaidsPerEmbed { get; set; }
         public int MaxSecondsBetweenPosts { get; set; }
         public List<ushort> IgnoreWeaponIds { get; set; }
+        public List<ushort> IgnorePlaceableIds { get; set; }
     }
 }

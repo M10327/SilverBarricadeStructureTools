@@ -21,6 +21,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
         public static void CheckDamagedStructure(CSteamID instigatorSteamID, Transform structureTransform, ref ushort pendingTotalDamage, ref bool shouldAllow)
         {
             var b = StructureManager.FindStructureByRootTransform(structureTransform).GetServersideData();
+            if (SBST.Instance.cfg.raidLogs.IgnorePlaceableIds.Contains(b.structure.asset.id)) return;
             if (b.structure.health - pendingTotalDamage <= 0 && shouldAllow)
             {
                 if (instigatorSteamID != CSteamID.Nil && instigatorSteamID != Provider.server && instigatorSteamID != (CSteamID)0)
@@ -31,6 +32,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
         public static void CheckDamagedBarricade(CSteamID instigatorSteamID, Transform barricadeTransform, ref ushort pendingTotalDamage, ref bool shouldAllow)
         {
             var t = BarricadeManager.FindBarricadeByRootTransform(barricadeTransform).GetServersideData();
+            if (SBST.Instance.cfg.raidLogs.IgnorePlaceableIds.Contains(t.barricade.asset.id)) return;
             if (t.barricade.health - pendingTotalDamage <= 0 && shouldAllow)
             {
                 if (instigatorSteamID != CSteamID.Nil && instigatorSteamID != Provider.server && instigatorSteamID != (CSteamID)0)
