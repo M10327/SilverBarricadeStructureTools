@@ -21,16 +21,14 @@ namespace SilverBarricadeStructureTools.SubPlugins
             if (p == null) return;
             if (p.Player.stance.stance != EPlayerStance.CROUCH) return;
             var bar = BarricadeManager.FindBarricadeByRootTransform(plant.transform);
-            Rocket.Core.Logging.Logger.Log($"{plant.planted}, {plant.growth}, {plant.IsFullyGrown}");
+            // Rocket.Core.Logging.Logger.Log($"{plant.planted}, {plant.growth}, {plant.IsFullyGrown}, {string.Join("", bar.GetServersideData().barricade.state)}");
             var plants = p.Inventory.search(plant.grow, false, true);
             if (plants.Count < 1) return;
             var page = plants[0].page;
             var index = p.Inventory.getIndex(page, plants[0].jar.x, plants[0].jar.y);
             p.Inventory.removeItem(page, index);
-            
             var seedBarricadeToPlace = new Barricade(bar.asset);
             var newPlant = BarricadeManager.dropNonPlantedBarricade(seedBarricadeToPlace, plant.transform.position, plant.transform.rotation, bar.GetServersideData().owner, bar.GetServersideData().group);
-            BarricadeManager.updateFarm(newPlant.transform, plant.planted, true);
         }
     }
 }
