@@ -14,7 +14,7 @@ namespace SilverBarricadeStructureTools.Models
         public bool DamageWhileOwnerOnline { get; set; }
         public float DamagePercent { get; set; }
         public float HealPercent { get; set; }
-        public int IntervalSeconds { get; set; }
+        public int HoursTilFullDecay { get; set; }
         public List<ulong> DecayIgnoreOwnerGroupIds { get; set; }
     }
 }

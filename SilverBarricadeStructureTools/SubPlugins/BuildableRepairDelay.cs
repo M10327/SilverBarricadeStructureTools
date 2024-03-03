@@ -17,11 +17,10 @@ namespace SilverBarricadeStructureTools.SubPlugins
         public static void CheckIfCanRepair(NetId id, CSteamID instigatorSteamID, ref bool shouldAllow)
         {
             var cfg = SBST.Instance.cfg;
-            if (!SBST.Instance.TimeLastDamaged.ContainsKey(id)) return;
-            long delta = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - SBST.Instance.TimeLastDamaged[id];
-            if (delta < cfg.BuildableRepairDelay.RepairDelaySeconds)
+            if (!checkIfCanRepair(id, out long delta))
             {
                 shouldAllow = false;
+                if ((ulong)instigatorSteamID < 1000 || instigatorSteamID == Provider.server || instigatorSteamID == null) return;
                 long timeLeft = cfg.BuildableRepairDelay.RepairDelaySeconds - delta;
                 if (cfg.BuildableRepairDelay.UseChat)
                     UnturnedChat.Say(instigatorSteamID, SBST.Instance.Translate("RepairDelay", timeLeft.ToString()), SBST.Instance.MessageColor);
@@ -32,6 +31,15 @@ namespace SilverBarricadeStructureTools.SubPlugins
                     EffectManager.sendUIEffect(cfg.BuildableRepairDelay.UiId, (short)(cfg.BuildableRepairDelay.UiId + 10), p.Player.channel.owner.transportConnection, true, SBST.Instance.Translate("RepairDelay", timeLeft.ToString()));
                 }
             }
+        }
+
+        public static bool checkIfCanRepair(NetId id, out long delta)
+        {
+            delta = 0;
+            if (!SBST.Instance.TimeLastDamaged.ContainsKey(id)) return true;
+            delta = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - SBST.Instance.TimeLastDamaged[id];
+            if (delta < SBST.Instance.cfg.BuildableRepairDelay.RepairDelaySeconds) return false;
+            else return true;
         }
 
         public static void SetLastDamaged(NetId id)

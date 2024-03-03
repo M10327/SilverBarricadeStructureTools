@@ -17,7 +17,8 @@ namespace SilverBarricadeStructureTools.SubPlugins
             if (SBST.Instance.cfg.UnbreakablesIds.Contains(owner) || SBST.Instance.cfg.UnbreakablesIds.Contains(group))
             {
                 shouldAllow = false;
-                if ((ulong)instigatorSteamID > 1000) UnturnedChat.Say(instigatorSteamID, SBST.Instance.Translate("MayNotDamage", name), SBST.Instance.MessageColor);
+                if ((ulong)instigatorSteamID < 1000 || instigatorSteamID == Provider.server || instigatorSteamID == null) return;
+                UnturnedChat.Say(instigatorSteamID, SBST.Instance.Translate("MayNotDamage", name), SBST.Instance.MessageColor);
             }
         }
     }

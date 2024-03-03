@@ -100,7 +100,7 @@ namespace SilverBarricadeStructureTools
                 DamageWhileOwnerOnline = false,
                 DamagePercent = 1,
                 HealPercent = 4,
-                IntervalSeconds = 6048,
+                HoursTilFullDecay = 72,
                 DecayIgnoreOwnerGroupIds = new List<ulong>() { 69 }
             };
             OfflineRaidProt = new mOfflineRaidProt()

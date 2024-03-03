@@ -61,7 +61,9 @@ namespace SilverBarricadeStructureTools
             AutoCheckTimer.Enabled = true;
 
             // Decay Timer
-            DecayTimer = new System.Timers.Timer(cfg.Decay.IntervalSeconds * 1000);
+            float decayTime = ((float)cfg.Decay.HoursTilFullDecay / (100f / cfg.Decay.DamagePercent)) * 3600f;
+            Rocket.Core.Logging.Logger.Log($"Decay time set to {cfg.Decay.HoursTilFullDecay} hours total, {decayTime} seconds ({decayTime / 3600f} hours) between cycles");
+            DecayTimer = new System.Timers.Timer(decayTime * 1000);
             DecayTimer.Elapsed += Decay.DecayTimer_Elapsed;
             DecayTimer.AutoReset = true;
             DecayTimer.Enabled = true;

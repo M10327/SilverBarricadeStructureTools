@@ -135,7 +135,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
                     {
                         float dmg = d.asset.health * (SBST.Instance.cfg.Decay.DamagePercent / 100);
                         if (dmg < 1) dmg = 1;
-                        BarricadeManager.damage(d.model, dmg, 1, false, default(CSteamID), EDamageOrigin.Unknown);
+                        BarricadeManager.damage(d.model, dmg, 1, false, Provider.server, EDamageOrigin.Unknown);
                     }
                     else if (outcome == DecayOutcome.heal)
                     {
@@ -160,7 +160,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
                     {
                         float dmg = d.asset.health * (SBST.Instance.cfg.Decay.DamagePercent / 100);
                         if (dmg < 1) dmg = 1;
-                        StructureManager.damage(d.model, new Vector3(0, 0, 0), dmg, 1, false, default(CSteamID), EDamageOrigin.Unknown);
+                        StructureManager.damage(d.model, new Vector3(0, 0, 0), dmg, 1, false, Provider.server, EDamageOrigin.Unknown);
                     }
                     else if (outcome == DecayOutcome.heal)
                     {
@@ -171,6 +171,5 @@ namespace SilverBarricadeStructureTools.SubPlugins
                 }
             }
         }
-
     }
 }
