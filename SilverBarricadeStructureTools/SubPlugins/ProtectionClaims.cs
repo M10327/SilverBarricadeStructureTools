@@ -18,13 +18,17 @@ namespace SilverBarricadeStructureTools.SubPlugins
             var cfg = SBST.Instance.cfg.ProtectionClaims;
             if (assetB != null)
             {
+                if (cfg.IgnoreBuildIds.Contains(assetB.id))
+                    return;
                 if (assetB.build == EBuild.FARM)
                     return;
                 var zz = cfg.IgnoreBuildTypes.ConvertAll(x => (EBuild)Enum.Parse(typeof(EBuild), x.ToUpper()));
                 if (zz.Contains(assetB.build))
                     return;
             }
-            
+            if (assetS != null && cfg.IgnoreBuildIds.Contains(assetS.id))
+                return;
+
             var checkrange = 32 * 32;
             List<RegionCoordinate> regions = new List<RegionCoordinate>();
             Regions.getRegionsInRadius(point, checkrange, regions);

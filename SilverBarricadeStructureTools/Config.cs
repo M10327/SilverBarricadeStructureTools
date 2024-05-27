@@ -164,6 +164,7 @@ namespace SilverBarricadeStructureTools
             {
                 Enabled = true,
                 IgnoreBuildTypes = new List<string>() { "DOOR", "GATE", "HATCH", "SENTRY", "SENTRY_FREEFORM", "STORAGE", "STORAGE_WALL" },
+                IgnoreBuildIds = new List<ushort>() { 26286 },
                 Ids = new List<ushort>() { 1158 }
             };
             BlockHordesNavList = new List<byte>() { 0 }; 
