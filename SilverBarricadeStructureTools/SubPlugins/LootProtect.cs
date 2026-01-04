@@ -17,7 +17,7 @@ namespace SilverBarricadeStructureTools.SubPlugins
         public static void CheckIfAllowed(ulong playerId, Vector3 position, ref bool shouldAllow, ushort itemId, bool breakableWithLowcal, string Name)
         {
             if (!LevelNavigation.tryGetNavigation(position, out byte nav)) return;
-            var bounds = ((RecastGraph)AstarPath.active.graphs[(int)nav]).forcedBounds;
+            var bounds = ((RecastGraph)AstarPath.active.graphs[(int)nav]).bounds;
             if (position.y > (bounds.center.y + SBST.Instance.cfg.LootProtect.Height)) return;
             bounds.Expand(SBST.Instance.cfg.LootProtect.Resize);
             if (!bounds.ContainsXZ(position)) return;
