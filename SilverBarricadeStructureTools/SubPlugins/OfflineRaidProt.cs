@@ -13,15 +13,16 @@ namespace SilverBarricadeStructureTools.SubPlugins
             if (!SBST.Instance.OnlinePlayers.Contains(owner) && !SBST.Instance.OnlineGroups.Contains(group))
             {
                 // no one is online
-                damage = (ushort)(damage * SBST.Instance.cfg.OfflineRaidProt.OfflineMulti);
+                damage = (ushort)((float)damage * SBST.Instance.cfg.OfflineRaidProt.OfflineMulti);
             }
             else
             {
                 // someone is online
-                damage = (ushort)(damage * SBST.Instance.cfg.OfflineRaidProt.OnlineMulti);
+                damage = (ushort)((float)damage * SBST.Instance.cfg.OfflineRaidProt.OnlineMulti);
             }
 
-            if (damage < 1) shouldAllow = false;
+            if (SBST.Instance.cfg.OfflineRaidProt.MinimumOne && damage < 1) damage = 1;
+            else if (damage < 1) shouldAllow = false;
         }
     }
 }

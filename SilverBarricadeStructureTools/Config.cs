@@ -106,6 +106,7 @@ namespace SilverBarricadeStructureTools
             OfflineRaidProt = new mOfflineRaidProt()
             {
                 Enabled = true,
+                MinimumOne = true,
                 OnlineMulti = 1.0f,
                 OfflineMulti = 0.5f
             };

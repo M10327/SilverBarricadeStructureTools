@@ -11,6 +11,8 @@ namespace SilverBarricadeStructureTools.Models
     {
         [XmlAttribute("Enabled")]
         public bool Enabled { get; set; }
+        [XmlAttribute("MinimumOne")]
+        public bool MinimumOne { get; set; }
         public float OnlineMulti { get; set; }
         public float OfflineMulti { get; set; }
     }
